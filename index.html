@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apprendre avec l'IA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* === PALETTE RETROFUTURISME === */
+        :root {
+            --retro-teal: #127676;
+            --retro-orange: #E4632E;
+            --retro-jaune: #E3A535;
+            --retro-ink: #0D1617;
+            --retro-paper: #F2EFE6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--retro-ink);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            padding: 12px;
+        }
+
+        /* === CADRE ART NOUVEAU === */
+        .page-frame {
+            background: var(--retro-paper);
+            border: 4px solid var(--retro-orange);
+            border-radius: 8px;
+            position: relative;
+            min-height: calc(100vh - 24px);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Motifs floraux aux coins */
+        .corner-flourish {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            color: var(--retro-teal);
+            opacity: 0.5;
+        }
+        .corner-flourish svg {
+            width: 100%;
+            height: 100%;
+        }
+        .corner-flourish.top-left { top: 12px; left: 12px; }
+        .corner-flourish.top-right { top: 12px; right: 12px; transform: scaleX(-1); }
+        .corner-flourish.bottom-left { bottom: 12px; left: 12px; transform: scaleY(-1); }
+        .corner-flourish.bottom-right { bottom: 12px; right: 12px; transform: scale(-1); }
+
+        /* === HEADER === */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: var(--retro-teal);
+            color: var(--retro-paper);
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', 'Anton', Impact, sans-serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            color: var(--retro-ink);
+            letter-spacing: 0.08em;
+            line-height: 1.1;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        h1 span {
+            color: var(--retro-teal);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--retro-ink);
+            opacity: 0.8;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* === SÉPARATEUR ART NOUVEAU === */
+        .retro-separator {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 30px 0 40px;
+            color: var(--retro-teal);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .retro-separator::before,
+        .retro-separator::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--retro-teal) 20%,
+                var(--retro-teal) 80%,
+                transparent
+            );
+        }
+
+        .retro-separator .flourish {
+            font-size: 1.5rem;
+            opacity: 0.7;
+        }
+
+        /* === VIDEO CONTAINER === */
+        .video-wrapper {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .video-card {
+            background: var(--retro-paper);
+            border: 4px solid var(--retro-teal);
+            border-radius: 24px 8px 24px 8px;
+            box-shadow: 
+                inset 0 0 0 3px var(--retro-orange),
+                0 12px 40px rgba(13, 22, 23, 0.15);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .video-header {
+            background: var(--retro-teal);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .video-header-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--retro-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-header-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--retro-paper);
+        }
+
+        .video-header-text {
+            color: var(--retro-paper);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            background: var(--retro-ink);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* === FOOTER INFO === */
+        .footer-info {
+            margin-top: 40px;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .info-pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .info-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 2px solid var(--retro-teal);
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            color: var(--retro-ink);
+        }
+
+        .info-pill-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--retro-jaune);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        /* === BOUTON PILL === */
+        .retro-btn-pill {
+            display: inline-flex;
+            border-radius: 50px;
+            border: 3px solid var(--retro-teal);
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .retro-btn-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(18, 118, 118, 0.25);
+        }
+
+        .retro-btn-pill-text {
+            background: var(--retro-jaune);
+            color: var(--retro-ink);
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+        }
+
+        .retro-btn-pill-icon {
+            background: var(--retro-orange);
+            color: var(--retro-paper);
+            width: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* === PAGE FOOTER === */
+        .page-footer {
+            margin-top: auto;
+            padding-top: 40px;
+            text-align: center;
+            color: var(--retro-ink);
+            opacity: 0.6;
+            font-size: 0.8rem;
+        }
+
+        .page-footer a {
+            color: var(--retro-teal);
+            text-decoration: none;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .page-frame {
+                padding: 40px 20px;
+            }
+
+            .corner-flourish {
+                width: 50px;
+                height: 50px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .video-header {
+                padding: 12px 16px;
+            }
+
+            .info-pills {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-frame">
+        <!-- Motifs floraux Art Nouveau aux coins -->
+        <div class="corner-flourish top-left">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 90 Q10 50 30 30 Q50 10 90 10" stroke="currentColor" stroke-width="3" fill="none"/>
+                <path d="M10 70 Q20 40 40 25 Q60 10 90 15" stroke="currentColor" stroke-width="2" fill="none" opacity="0.6"/>
+                <circle cx="30" cy="30" r="4" fill="currentColor" opacity="0.8"/>
+                <path d="M25 35 Q30 25 35 35 Q30 30 25 35" fill="currentColor" opacity="0.5"/>
+            </svg>
+        </div>
+        <div class="corner-flourish top-right">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 90 Q10 50 30 30 Q50 10 90 10" stroke="currentColor" stroke-width="3" fill="none"/>
+                <path d="M10 70 Q20 40 40 25 Q60 10 90 15" stroke="currentColor" stroke-width="2" fill="none" opacity="0.6"/>
+                <circle cx="30" cy="30" r="4" fill="currentColor" opacity="0.8"/>
+                <path d="M25 35 Q30 25 35 35 Q30 30 25 35" fill="currentColor" opacity="0.5"/>
+            </svg>
+        </div>
+        <div class="corner-flourish bottom-left">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 90 Q10 50 30 30 Q50 10 90 10" stroke="currentColor" stroke-width="3" fill="none"/>
+                <path d="M10 70 Q20 40 40 25 Q60 10 90 15" stroke="currentColor" stroke-width="2" fill="none" opacity="0.6"/>
+                <circle cx="30" cy="30" r="4" fill="currentColor" opacity="0.8"/>
+                <path d="M25 35 Q30 25 35 35 Q30 30 25 35" fill="currentColor" opacity="0.5"/>
+            </svg>
+        </div>
+        <div class="corner-flourish bottom-right">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 90 Q10 50 30 30 Q50 10 90 10" stroke="currentColor" stroke-width="3" fill="none"/>
+                <path d="M10 70 Q20 40 40 25 Q60 10 90 15" stroke="currentColor" stroke-width="2" fill="none" opacity="0.6"/>
+                <circle cx="30" cy="30" r="4" fill="currentColor" opacity="0.8"/>
+                <path d="M25 35 Q30 25 35 35 Q30 30 25 35" fill="currentColor" opacity="0.5"/>
+            </svg>
+        </div>
+
+        <!-- Header -->
+        <header class="header">
+            <span class="header-badge">Formation IA</span>
+            <h1>Apprendre <span>avec l'IA</span></h1>
+            <p class="subtitle">Pistes pour apprendre avec l'IA sans se transformer en mollusque</p>
+        </header>
+
+        <!-- Séparateur -->
+        <div class="retro-separator">
+            <span class="flourish">❧</span>
+        </div>
+
+        <!-- Video -->
+        <div class="video-wrapper">
+            <div class="video-card">
+
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube.com/embed/bP7_RU16Ln0" 
+                        title="Apprendre avec l'IA"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Page Footer -->
+        <footer class="page-footer">
+            <p>Formation Intelligence Artificielle • Développement de l'esprit critique</p>
+        </footer>
+    </div>
+</body>
+</html>
